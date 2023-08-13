@@ -21,7 +21,7 @@ const useFetch = <T>(url: string, config: RequestInit | undefined = undefined) =
         const responseData = await response.json();
         setResponse(response);
         if(response.ok) {
-          setData(data);
+          setData(responseData);
         }
         else {
           setError(responseData);
