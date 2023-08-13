@@ -1,11 +1,26 @@
-import './App.css'
+import { RouterProvider } from 'react-router';
+import {
+  createRoutesFromElements,
+  createBrowserRouter,
+  Route
+} from "react-router-dom";
+import Root from './pages/Root';
 
-function App() {
-  return (
-    <>
-      <h1 className="text-xl text-red-500">Hello Word!</h1>
-    </>
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route
+      path="/"
+      element={ <Root /> }
+    >
+
+    </Route>
   )
+)
+
+const App = () => {
+  return (
+    <RouterProvider router={router} />
+  );
 }
 
 export default App
