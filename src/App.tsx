@@ -7,6 +7,7 @@ import {
 import Root from './pages/Root';
 import AuthContainer from './pages/AuthContainer';
 import Login from './components/Login';
+import Register from './components/Register';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,10 @@ const router = createBrowserRouter(
         <Route
           path="login"
           element={ <Login /> }
+        />
+        <Route
+          path="register"
+          element={ <Register /> }
         />
       </Route>
     </Route>
