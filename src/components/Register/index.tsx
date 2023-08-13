@@ -5,6 +5,7 @@ import { BASE_API_URL } from "../../utils/Contantes";
 import useFetchFunction from "../../hooks/useFetchFunction";
 import ValidationErrorType from "../../types/ValidationErrorType";
 import useAuth from "../../hooks/useAuth";
+import TokenResponseType from "../../types/TokenResponseType";
 
 type RegisterFormType = {
   name: string,
@@ -15,32 +16,22 @@ type RegisterFormType = {
 
 type RegisterFormTypeKeys = keyof RegisterFormType;
 
-type ResponseData = {
-  access_token: string,
-  token_type: string
-}
-
 const Register = () => {
 
   const { register, handleSubmit, formState: { errors }, getFieldState, watch } = useForm<RegisterFormType>();
-  const { data, error, isLoading, fetchFunction, status } = useFetchFunction<ResponseData>();
+  const { data, error, isLoading, fetchFunction, status } = useFetchFunction<TokenResponseType>();
   const { saveToken } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = async (formData: RegisterFormType) => {
-    try {
-      await fetchFunction(`${BASE_API_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: {
-          "Content-type": "application/json",
-          "Accept": 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-    }
-    catch(e) {
-      console.error(e);
-    }
+    fetchFunction(`${BASE_API_URL}/api/auth/register`, {
+      method: 'POST',
+      headers: {
+        "Content-type": "application/json",
+        "Accept": 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
   }
 
   useEffect(() => {
@@ -49,8 +40,6 @@ const Register = () => {
       navigate('/');
     }
   }, [data, navigate, saveToken]);
-
-
 
   const getServerError = (input: RegisterFormTypeKeys): string | undefined => {
     if(error && status && status === 422) {
