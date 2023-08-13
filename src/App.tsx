@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import jwtDecode from "jwt-decode";
 import { RouterProvider } from 'react-router';
 import {
   createRoutesFromElements,
@@ -9,8 +10,10 @@ import Root from './pages/Root';
 import AuthContainer from './pages/AuthContainer';
 import Login from './components/Login';
 import Register from './components/Register';
-import TokenDataType from './types/TokenDataType';
 import AuthContext, { AuthContextData } from './contexts/AuthContext';
+import { KEY_LOCAL_STORAGE } from './utils/Contantes';
+import { LocalStorageTokenType } from './hooks/useAuth';
+import TokenDataType from './types/TokenDataType';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,16 +40,40 @@ const router = createBrowserRouter(
 
 const App = () => {
   const [authContextData, setAuthContextData] = useState<AuthContextData>({});
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const refVerifyToken = useRef<boolean>(false);
 
-  return (
-    <AuthContext.Provider value={{
-      authContextData,
-      setAuthContextData
-    }}>
-      <RouterProvider router={router} />
-    </AuthContext.Provider>
+  useEffect(() => {
+    if(refVerifyToken.current === false) {
+      const localStorageData = localStorage.getItem(KEY_LOCAL_STORAGE);
+      if(localStorageData) {
+        const localStorageObj = JSON.parse(localStorageData) as LocalStorageTokenType;
+        try {
+          const tokenData = jwtDecode(localStorageObj.token) as  TokenDataType;
+          setAuthContextData({
+            tokenData
+          })
+        }
+        catch(e) {}
+      }
+      setIsReady(true);
+    }
+  }, [])
 
-  );
+  if(isReady) {
+    return (
+      <AuthContext.Provider value={{
+        authContextData,
+        setAuthContextData
+      }}>
+        <RouterProvider router={router} />
+      </AuthContext.Provider>
+    );
+  }
+  else {
+    return  <></>
+  }
+
 }
 
 export default App

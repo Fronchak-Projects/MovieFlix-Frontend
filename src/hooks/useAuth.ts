@@ -4,6 +4,10 @@ import AuthContext from '../contexts/AuthContext';
 import TokenDataType from '../types/TokenDataType';
 import { KEY_LOCAL_STORAGE } from '../utils/Contantes';
 
+export type LocalStorageTokenType = {
+  token: string
+}
+
 const useAuth = () => {
 
   const { authContextData, setAuthContextData } = useContext(AuthContext);
