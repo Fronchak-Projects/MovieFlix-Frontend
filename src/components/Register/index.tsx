@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { FieldErrors, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_API_URL } from "../../utils/Contantes";
 import useFetchFunction from "../../hooks/useFetchFunction";
 import ValidationErrorType from "../../types/ValidationErrorType";
+import useAuth from "../../hooks/useAuth";
 
 type RegisterFormType = {
   name: string,
@@ -22,24 +23,34 @@ type ResponseData = {
 const Register = () => {
 
   const { register, handleSubmit, formState: { errors }, getFieldState, watch } = useForm<RegisterFormType>();
-  const [wasSubmited, setWasSubmited] = useState<boolean>(false);
   const { data, error, isLoading, fetchFunction, status } = useFetchFunction<ResponseData>();
+  const { saveToken } = useAuth();
+  const navigate = useNavigate();
 
-  const onSubmit = async (data: RegisterFormType) => {
+  const onSubmit = async (formData: RegisterFormType) => {
     try {
-      fetchFunction(`${BASE_API_URL}/api/auth/register`, {
+      await fetchFunction(`${BASE_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           "Content-type": "application/json",
           "Accept": 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(formData)
       });
     }
     catch(e) {
       console.error(e);
     }
   }
+
+  useEffect(() => {
+    if(data) {
+      saveToken(data.access_token);
+      navigate('/');
+    }
+  }, [data, navigate, saveToken]);
+
+
 
   const getServerError = (input: RegisterFormTypeKeys): string | undefined => {
     if(error && status && status === 422) {
@@ -132,7 +143,7 @@ const Register = () => {
             <div className="error-form-feedback">{ getErrorMessage('confirm_password') }</div>
         </div>
         <button
-          onClick={() => setWasSubmited(true)}
+          disabled={isLoading}
           type="submit"
           className="w-full p-2 rounded-md bg-blue-500 text-white uppercase font-bold hover:bg-blue-700 duration-300"
         >Criar conta</button>

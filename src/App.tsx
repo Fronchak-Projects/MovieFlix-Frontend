@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { RouterProvider } from 'react-router';
 import {
   createRoutesFromElements,
@@ -8,6 +9,8 @@ import Root from './pages/Root';
 import AuthContainer from './pages/AuthContainer';
 import Login from './components/Login';
 import Register from './components/Register';
+import TokenDataType from './types/TokenDataType';
+import AuthContext, { AuthContextData } from './contexts/AuthContext';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,8 +36,16 @@ const router = createBrowserRouter(
 )
 
 const App = () => {
+  const [authContextData, setAuthContextData] = useState<AuthContextData>({});
+
   return (
-    <RouterProvider router={router} />
+    <AuthContext.Provider value={{
+      authContextData,
+      setAuthContextData
+    }}>
+      <RouterProvider router={router} />
+    </AuthContext.Provider>
+
   );
 }
 
