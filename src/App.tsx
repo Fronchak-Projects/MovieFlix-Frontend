@@ -14,6 +14,8 @@ import AuthContext, { AuthContextData } from './contexts/AuthContext';
 import { KEY_LOCAL_STORAGE } from './utils/Contantes';
 import { LocalStorageTokenType } from './hooks/useAuth';
 import TokenDataType from './types/TokenDataType';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -67,6 +69,11 @@ const App = () => {
         setAuthContextData
       }}>
         <RouterProvider router={router} />
+        <ToastContainer
+          theme='dark'
+          position='bottom-right'
+          autoClose={3000}
+        />
       </AuthContext.Provider>
     );
   }

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_API_URL } from "../../utils/Contantes";
 import useFetchFunction from "../../hooks/useFetchFunction";
@@ -38,6 +39,7 @@ const Register = () => {
     if(data) {
       saveToken(data.access_token);
       navigate('/');
+      toast.success('Conta criada com sucesso');
     }
   }, [data, navigate, saveToken]);
 

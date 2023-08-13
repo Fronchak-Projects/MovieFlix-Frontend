@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
 
@@ -9,6 +10,7 @@ const Navbar = () => {
   const onLogout = () => {
     logout();
     navigate('/auth/login');
+    toast.info('Deslogado com sucesso');
   }
 
   return (

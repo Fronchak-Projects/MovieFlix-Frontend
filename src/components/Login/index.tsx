@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useFetchFunction from '../../hooks/useFetchFunction';
@@ -35,6 +36,7 @@ const Login = () => {
     if(data) {
       saveToken(data.access_token);
       navigate('/');
+      toast.success('Logado com sucesso');
     }
   }, [data, navigate, saveToken]);
 
