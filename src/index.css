@@ -5,3 +5,11 @@
 .form {
   @apply w-full p-2 rounded-md text-black placeholder:text-gray-400 border border-gray-400 outline-none;
 }
+
+.is-invalid {
+  @apply border-red-500;
+}
+
+.error-form-feedback {
+  @apply text-xs ml-2 text-red-500;
+}

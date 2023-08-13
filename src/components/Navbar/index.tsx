@@ -18,7 +18,7 @@ const Navbar = () => {
           </ul>
           <ul className="flex">
             <li><a className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" href="/auth/login">Login</a></li>
-            <li><a className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" href="/auth">Register</a></li>
+            <li><a className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" href="/auth/register">Register</a></li>
           </ul>
         </nav>
       </div>
