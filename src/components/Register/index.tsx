@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { BASE_API_URL } from "../../utils/Contantes";
+import useFetchFunction from "../../hooks/useFetchFunction";
+import ValidationErrorType from "../../types/ValidationErrorType";
 
 type RegisterFormType = {
   name: string,
@@ -10,14 +12,22 @@ type RegisterFormType = {
   confirm_password: string
 }
 
+type RegisterFormTypeKeys = keyof RegisterFormType;
+
+type ResponseData = {
+  access_token: string,
+  token_type: string
+}
+
 const Register = () => {
 
-  const { register, handleSubmit, setValue, setError, formState: { errors }, getFieldState, getValues,watch } = useForm<RegisterFormType>();
+  const { register, handleSubmit, formState: { errors }, getFieldState, watch } = useForm<RegisterFormType>();
   const [wasSubmited, setWasSubmited] = useState<boolean>(false);
+  const { data, error, isLoading, fetchFunction, status } = useFetchFunction<ResponseData>();
 
   const onSubmit = async (data: RegisterFormType) => {
     try {
-      const response = await fetch(`${BASE_API_URL}/api/auth/register`, {
+      fetchFunction(`${BASE_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           "Content-type": "application/json",
@@ -25,12 +35,25 @@ const Register = () => {
         },
         body: JSON.stringify(data)
       });
-      const responseData = await response.json();
-      console.log(responseData);
     }
     catch(e) {
       console.error(e);
     }
+  }
+
+  const getServerError = (input: RegisterFormTypeKeys): string | undefined => {
+    if(error && status && status === 422) {
+      const serverError = error as ValidationErrorType;
+      return serverError.message[input] && serverError.message[input][0];
+    }
+  }
+
+  const getErrorMessage = (input: RegisterFormTypeKeys): string | undefined => {
+    return errors[input]?.message || getServerError(input);
+  }
+
+  const isFieldInvalid = (input: RegisterFormTypeKeys): boolean => {
+    return getFieldState(input).invalid || getServerError(input) !== undefined;
   }
 
   return (
@@ -50,9 +73,9 @@ const Register = () => {
             id="email"
             name="email"
             placeholder="Email"
-            className={`form ${getFieldState('email').invalid && 'is-invalid'}`}
+            className={`form ${isFieldInvalid('email') && 'is-invalid'}`}
           />
-          <div className="error-form-feedback">{ errors['email']?.message }</div>
+          <div className="error-form-feedback">{ getErrorMessage('email') }</div>
         </div>
         <div className="mb-3">
           <input
@@ -65,9 +88,9 @@ const Register = () => {
             }) }
             type="text"
             placeholder="Nome"
-            className={`form ${getFieldState('name').invalid && 'is-invalid'}`}
+            className={`form ${isFieldInvalid('name') && 'is-invalid'}`}
           />
-          <div className="error-form-feedback">{ errors['name']?.message }</div>
+          <div className="error-form-feedback">{ getErrorMessage('name') }</div>
         </div>
         <div className="mb-3">
           <input
@@ -82,12 +105,12 @@ const Register = () => {
               name="password"
               type="password"
               placeholder="Senha"
-              className="form"
+              className={`form ${isFieldInvalid('password') && 'is-invalid'}`}
             />
-            <div className="error-form-feedback">{ errors['password']?.message }</div>
+          <div className="error-form-feedback">{ getErrorMessage('password') }</div>
         </div>
         <div className="mb-3">
-        <input
+          <input
               { ...register('confirm_password', {
                 required: 'Campo obrigatório',
                 minLength: {
@@ -104,9 +127,9 @@ const Register = () => {
               name="confirm_password"
               type="password"
               placeholder="Confirme a sua senha"
-              className="form"
+              className={`form ${isFieldInvalid('confirm_password') && 'is-invalid'}`}
             />
-            <div className="error-form-feedback">{ errors['confirm_password']?.message }</div>
+            <div className="error-form-feedback">{ getErrorMessage('confirm_password') }</div>
         </div>
         <button
           onClick={() => setWasSubmited(true)}
