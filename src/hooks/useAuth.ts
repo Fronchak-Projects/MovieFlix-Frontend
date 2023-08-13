@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 import AuthContext from '../contexts/AuthContext';
 import TokenDataType from '../types/TokenDataType';
 import { KEY_LOCAL_STORAGE } from '../utils/Contantes';
+import RoleType from '../types/RoleType';
 
 export type LocalStorageTokenType = {
   token: string
@@ -19,7 +20,8 @@ const useAuth = () => {
         token
       }))
       setAuthContextData({
-        tokenData
+        tokenData,
+        token
       });
     }
     catch(e) {
@@ -36,11 +38,19 @@ const useAuth = () => {
     return authContextData.tokenData !== undefined && (authContextData.tokenData.exp > (Date.now() / 1000));
   }
 
+  const hasAnyRole = (roles: Array<RoleType>): boolean => {
+    const tokenData = authContextData.tokenData;
+    if(!tokenData) return false;
+    return tokenData.roles.some((role) => roles.some((roleAux) => roleAux === role));
+  }
+
   return {
     authContextData,
     isAuthenticated,
     saveToken,
     logout,
+    hasAnyRole,
+    token: authContextData.token,
     tokenData: authContextData.tokenData
   }
 }

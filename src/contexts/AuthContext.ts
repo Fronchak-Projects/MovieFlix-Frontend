@@ -3,6 +3,7 @@ import TokenDataType from '../types/TokenDataType';
 
 export type AuthContextData = {
   tokenData?: TokenDataType
+  token?: string
 }
 
 export type AuthContextType = {

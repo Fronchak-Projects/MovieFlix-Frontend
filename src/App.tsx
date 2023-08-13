@@ -16,6 +16,8 @@ import { LocalStorageTokenType } from './hooks/useAuth';
 import TokenDataType from './types/TokenDataType';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Genres from './pages/Genres';
+import GenresSave from './pages/GenresSave';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +25,14 @@ const router = createBrowserRouter(
       path="/"
       element={ <Root /> }
     >
+      <Route
+        path="genres"
+        element={ <Genres /> }
+      />
+      <Route
+        path="genres/save"
+        element={ <GenresSave /> }
+      />
       <Route
         path="auth"
         element={ <AuthContainer /> }
@@ -51,9 +61,11 @@ const App = () => {
       if(localStorageData) {
         const localStorageObj = JSON.parse(localStorageData) as LocalStorageTokenType;
         try {
-          const tokenData = jwtDecode(localStorageObj.token) as  TokenDataType;
+          const token = localStorageObj.token;
+          const tokenData = jwtDecode(token) as  TokenDataType;
           setAuthContextData({
-            tokenData
+            tokenData,
+            token
           })
         }
         catch(e) {}

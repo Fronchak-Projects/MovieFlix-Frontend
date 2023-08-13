@@ -12,7 +12,7 @@ type LoginFormType = {
   password: string
 }
 
-type LoginFormTypeKeys = 'email' | 'password';
+type LoginFormTypeKeys = keyof LoginFormType;
 
 const Login = () => {
 
@@ -54,7 +54,7 @@ const Login = () => {
 
   return (
     <div>
-      <h3 className="text-3xl font-bold mb-4">Login</h3>
+      <h3 className="form-title">Login</h3>
       { hasLoginError() && (
         <div className="mb-3 p-2 text-red-500 bg-red-200 rounded-lg">Email ou senha inválidos</div>
       )}
@@ -89,7 +89,7 @@ const Login = () => {
         </div>
         <button
           disabled={isLoading}
-          className="w-full p-2 rounded-md bg-blue-500 text-white uppercase font-bold hover:bg-blue-700 duration-300"
+          className="form-btn"
         >Entrar <i className="bi bi-box-arrow-in-right"></i></button>
       </form>
       <p className="text-sm">Ainda não possui uma conta? <Link to="/auth/register" className="text-blue-500 hover:underline">Clique aqui</Link>.</p>

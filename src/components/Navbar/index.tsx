@@ -23,7 +23,8 @@ const Navbar = () => {
         <i className="bi bi-list text-white md:invisible"></i>
         <nav className="hidden md:flex flex-1 justify-between">
           <ul className="flex">
-            <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/">Movies</NavLink></li>
+            <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/movies">Movies</NavLink></li>
+            <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/genres">Genres</NavLink></li>
             <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/">About Us</NavLink></li>
           </ul>
           { isAuthenticated() ?
