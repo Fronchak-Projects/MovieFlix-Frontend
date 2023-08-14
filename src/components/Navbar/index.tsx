@@ -24,8 +24,7 @@ const Navbar = () => {
         <nav className="hidden md:flex flex-1 justify-between">
           <ul className="flex">
             <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/movies">Movies</NavLink></li>
-            <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/genres">Genres</NavLink></li>
-            <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/">About Us</NavLink></li>
+            <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/admin">Admin</NavLink></li>
           </ul>
           { isAuthenticated() ?
             <ul className="flex">

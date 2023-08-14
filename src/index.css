@@ -46,6 +46,14 @@
   @apply bg-blue-700;
 }
 
+.admin-nav-link {
+  @apply flex-1 text-white bg-blue-400 uppercase px-4 py-2 text-center rounded-full font-bold;
+}
+
+.admin-nav-link.active {
+  @apply bg-blue-600;
+}
+
 @screen md {
   .form-card-container {
     @apply py-24 px-4;
@@ -57,5 +65,9 @@
 
   .main-form-container {
     @apply py-16;
+  }
+
+  .admin-nav-link {
+    @apply py-3 rounded-none flex-initial;
   }
 }

@@ -51,7 +51,7 @@ const GenresSave = () => {
   useEffect(() => {
     if(data) {
       toast.success("Gênero cadastrado com sucesso");
-      navigate('/genres');
+      navigate("/admin/genres");
     }
   }, [data, navigate]);
 

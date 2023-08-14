@@ -20,6 +20,7 @@ import Genres from './pages/Genres';
 import GenresSave from './pages/GenresSave';
 import GenresEdit from './pages/GenresEdit/GenresEdit';
 import PrivateRoutes from './pages/PrivateRoutes';
+import AdminContainer from './pages/AdminContainer';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,20 +29,15 @@ const router = createBrowserRouter(
       element={ <Root /> }
     >
       <Route element={ <PrivateRoutes roles={['admin', 'worker']} /> } >
-        <Route
-          path="genres"
-          element={ <Genres /> }
-        />
-        <Route
-          path="genres/save"
-          element={ <GenresSave /> }
-        />
-        <Route
-          path='genres/edit/:id'
-          element={ <GenresEdit /> }
-        />
+        <Route path="admin" element={ <AdminContainer /> }>
+          <Route
+            path="genres"
+            element={ <Genres /> }
+          />
+        </Route>
+        <Route path="genres/save" element={ <GenresSave /> } />
+        <Route path='genres/edit/:id' element={ <GenresEdit /> } />
       </Route>
-
       <Route
         path="auth"
         element={ <AuthContainer /> }

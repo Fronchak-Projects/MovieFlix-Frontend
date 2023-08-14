@@ -44,7 +44,7 @@ const GenresEdit = () => {
       else {
         toast.error("Algo deu errado, favor tentar novamente mais tarde");
       }
-      navigate('/genres');
+      navigate("/admin/genres");
     }
   }, [useFetchObj.status, useFetchObj.error]);
 
@@ -94,11 +94,11 @@ const GenresEdit = () => {
         toast.info("Você precisa estar logado para executar essa ação");
       }
       else if(status === 403) {
-        navigate('/genres');
+        navigate("/admin/genres");
         toast.info("Você não possui autorização para realizar essa ação");
       }
       else if(status === 404) {
-        navigate('/genres');
+        navigate("/admin/genres");
         toast.error("Gênero não encontrado");
       }
     }
@@ -106,7 +106,7 @@ const GenresEdit = () => {
 
   useEffect(() => {
     if(useFetchFunctionObj.data) {
-      navigate("/genres");
+      navigate("/admin/genres");
       toast.success("Gênero atualizado com sucesso");
     }
   }, [useFetchFunctionObj.data])

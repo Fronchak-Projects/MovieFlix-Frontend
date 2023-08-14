@@ -57,7 +57,7 @@ const Genres = () => {
   }, [useFetchFunctionObj.status, idDeleted])
 
   return (
-    <div className="container px-2 mx-auto my-10">
+    <div className="">
       <div className="flex justify-between items-center mb-3">
         <h2 className="text-white font-bold text-2xl uppercase">Gêneros</h2>
         <Link className="btn px-4 py-1 bg-blue-500 hover:bg-blue-700" to="/genres/save">Adicionar gênero</Link>
@@ -66,9 +66,9 @@ const Genres = () => {
         <p className="text-xl">Carregando gêneros</p>
       ) }
       { genres && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           { genres.map((genre) => (
-            <div className="p-2" key={genre.id}>
+            <div className="p-0" key={genre.id}>
               <GenreCard genre={genre} handleDelete={handleDelete} />
             </div>
           )) }
