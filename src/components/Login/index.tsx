@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useFetchFunction from '../../hooks/useFetchFunction';
 import TokenResponseType from '../../types/TokenResponseType';
@@ -20,6 +20,8 @@ const Login = () => {
   const { data, error, isLoading, fetchFunction, status } = useFetchFunction<TokenResponseType>();
   const { saveToken } = useAuth();
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const from = state ? state.from : "/genres";
 
   const onSubmit = (formData: LoginFormType) => {
     fetchFunction(`${BASE_API_URL}/api/auth/login`, {
@@ -35,7 +37,7 @@ const Login = () => {
   useEffect(() => {
     if(data) {
       saveToken(data.access_token);
-      navigate('/');
+      navigate(from, { replace: true });
       toast.success('Logado com sucesso');
     }
   }, [data, navigate, saveToken]);
