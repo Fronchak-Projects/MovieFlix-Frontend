@@ -19,6 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Genres from './pages/Genres';
 import GenresSave from './pages/GenresSave';
 import GenresEdit from './pages/GenresEdit/GenresEdit';
+import PrivateRoutes from './pages/PrivateRoutes';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,18 +27,21 @@ const router = createBrowserRouter(
       path="/"
       element={ <Root /> }
     >
-      <Route
-        path="genres"
-        element={ <Genres /> }
-      />
-      <Route
-        path="genres/save"
-        element={ <GenresSave /> }
-      />
-      <Route
-        path='genres/edit/:id'
-        element={ <GenresEdit /> }
-      />
+      <Route element={ <PrivateRoutes roles={['admin', 'worker']} /> } >
+        <Route
+          path="genres"
+          element={ <Genres /> }
+        />
+        <Route
+          path="genres/save"
+          element={ <GenresSave /> }
+        />
+        <Route
+          path='genres/edit/:id'
+          element={ <GenresEdit /> }
+        />
+      </Route>
+
       <Route
         path="auth"
         element={ <AuthContainer /> }
