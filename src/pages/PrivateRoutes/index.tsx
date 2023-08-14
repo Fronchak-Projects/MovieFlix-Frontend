@@ -1,4 +1,5 @@
-import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import RoleType from "../../types/RoleType"
 import useAuth from '../../hooks/useAuth';
@@ -9,24 +10,39 @@ type Props = {
 }
 
 const PrivateRoutes = ({ roles = [], redirectTo = "/" }: Props) => {
-
   const { pathname } = useLocation();
   const { isAuthenticated, hasAnyRole } = useAuth();
+  const navigate = useNavigate();
+  const useEffectRef = useRef<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
 
-  if(!isAuthenticated()) {
-    toast.info("Você precisar estar logado para acessar esse conteúdo");
-    return <Navigate to={"/auth/login"} replace state={{
-      from: pathname
-    }} />
-  }
+  useEffect(() => {
+    if(!useEffectRef.current) {
+      if(!isAuthenticated()) {
+        navigate("/auth/login", {
+          replace: true,
+          state: {
+            from: pathname
+          }
+        });
+        toast.info("Você precisar estar logado para acessar esse conteúdo");
+      }
+      else if(roles.length > 0 && !hasAnyRole(roles)) {
+        navigate(redirectTo, { replace: true });
+        toast.info("Você não possui permissão para acessar esse conteúdo");
+      }
+      setIsReady(true);
+      useEffectRef.current = true;
+    }
+  }, [isAuthenticated, navigate, hasAnyRole, roles, redirectTo]);
 
-  if(roles.length === 0 || hasAnyRole(roles)) {
+  if(isReady) {
     return <Outlet />
   }
   else {
-    toast.info("Você não possui permissão para acessar esse conteúdo");
-    return <Navigate to={redirectTo} replace />
+    return <></>
   }
+
 }
 
 export default PrivateRoutes;
