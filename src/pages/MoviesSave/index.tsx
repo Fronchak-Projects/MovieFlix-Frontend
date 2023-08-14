@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useFetch from '../../hooks/useFetch';
 import { BASE_API_URL } from '../../utils/Contantes';
 import GenreType from '../../types/models/GenreType';
 import useFetchFunction from '../../hooks/useFetchFunction';
 import ValidationErrorType from '../../types/ValidationErrorType';
+import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 type FormType = {
   title: string;
   synopsis: string;
-  image: FileList;
 }
 
 type FormTypeKeys = keyof FormType;
@@ -27,9 +29,35 @@ const MoviesSave = () => {
   const [genreIds, setGenreIds] = useState<Array<number>>([]);
   const [wasSubmited, setWasSubmited] = useState<boolean>(false);
   const genreIdsError = genreIds.length === 0 ? 'Campo obrigatório' : '';
+  const { isAuthenticated, token, hasAnyRole } = useAuth();
+  const navigate = useNavigate();
 
   const onSubmit = (formValues: FormType) => {
-    console.log('on submit');
+    if(genreIds.length === 0 || image === null) return;
+    if(!isAuthenticated()) {
+      navigate('/auth/login');
+      toast.info('Você precisa estar logado para realizar essa ação');
+      return;
+    }
+    if(!hasAnyRole(['worker', 'admin'])) {
+      navigate('/');
+      toast.info('Você não possui permissão para executar essa ação');
+      return;
+    }
+    const formData = new FormData();
+    formData.append("title", formValues.title);
+    formData.append("synopsis", formValues.synopsis);
+    formData.append("image", image);
+    genreIds.forEach((genreId) => formData.append("genres[]", genreId + ""));
+
+    useFetchFunctionObj.fetchFunction(`${BASE_API_URL}/api/movies`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: formData
+    })
   }
 
   const getServerError = (input: FormTypeKeys): string | undefined => {
@@ -110,20 +138,14 @@ const MoviesSave = () => {
                   <div className="mb-3">
                     <label className="label" htmlFor="image">Imagem</label>
                     <input
-                      { ...register('image', {
-                        validate: (value) => {
-                          console.log(value);
-                          return image != null ||'Campo obrigatório';
-                        },
-                      }) }
                       type='file'
                       name="image"
                       id="image"
                       onChange={handleFileChange}
                       accept="image/png, image/jpeg, image/jpg"
-                      className={`form ${isFieldInvalid('image') && 'is-invalid'}`}
+                      className={`form ${wasSubmited && image == null && 'is-invalid'}`}
                     />
-                    <div className="error-form-feedback">{ getErrorMessage('image') }</div>
+                    <div className="error-form-feedback">{ wasSubmited && !image && 'Campo obrigatório' }</div>
                   </div>
                   <div className="mb-3 md:mb-0">
                     <label className='label' >Gêneros</label>
@@ -156,7 +178,7 @@ const MoviesSave = () => {
                     name='synopsis'
                     placeholder='Sinopse'
                     rows={6}
-                    className={`form resize-y ${isFieldInvalid('image') && 'is-invalid'}`}
+                    className={`form resize-y ${isFieldInvalid('synopsis') && 'is-invalid'}`}
                   ></textarea>
                   <div className="error-form-feedback">{ getErrorMessage('synopsis') }</div>
                 </div>
