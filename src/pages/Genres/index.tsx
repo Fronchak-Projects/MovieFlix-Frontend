@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import { BASE_API_URL } from '../../utils/Contantes';
@@ -10,10 +11,14 @@ const Genres = () => {
     headers: {
       "Accept": "application/json"
     }
-  })
+  });
+  const [genres, setGenres] = useState<Array<GenreType> | undefined>();
 
-  console.log(data);
-  console.log(error);
+  useEffect(() => {
+    if(data !== undefined) {
+      setGenres(data);
+    }
+  }, [data]);
 
   return (
     <div className="container px-2 mx-auto my-10">
@@ -24,9 +29,9 @@ const Genres = () => {
       { isLoading && isLoading === true && (
         <p className="text-xl">Carregando gêneros</p>
       ) }
-      { data && (
+      { genres && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          { data.map((genre) => (
+          { genres.map((genre) => (
             <div className="p-2" key={genre.id}>
               <GenreCard genre={genre} />
             </div>

@@ -17,7 +17,7 @@ const GenreCard = ({ genre }: Props) => {
       <div className="p-3 flex-1 flex flex-col justify-between">
         <h3 className="text-xl mb-2"><Link className="hover:underline hover:text-blue-400" to={`/genres/${genre.id}`}>{ genre.name }</Link></h3>
         <div className="flex justify-end gap-x-2">
-          <button className="btn px-4 py-1 bg-blue-500 hover:bg-blue-700">Editar</button>
+          <Link to={`/genres/edit/${genre.id}`} className="btn px-4 py-1 bg-blue-500 hover:bg-blue-700">Editar</Link>
           <button className="btn px-4 py-1 bg-red-500 hover:bg-red-700">Excluir</button>
         </div>
       </div>
