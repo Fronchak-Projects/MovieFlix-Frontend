@@ -21,35 +21,24 @@ import GenresSave from './pages/GenresSave';
 import GenresEdit from './pages/GenresEdit/GenresEdit';
 import PrivateRoutes from './pages/PrivateRoutes';
 import AdminContainer from './pages/AdminContainer';
+import AdminMovies from './pages/AdminMovies';
+import MoviesSave from './pages/MoviesSave';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route
-      path="/"
-      element={ <Root /> }
-    >
+    <Route path="/" element={ <Root /> } >
       <Route element={ <PrivateRoutes roles={['admin', 'worker']} /> } >
         <Route path="admin" element={ <AdminContainer /> }>
-          <Route
-            path="genres"
-            element={ <Genres /> }
-          />
+          <Route path="genres" element={ <Genres /> } />
+          <Route path="movies" element={ <AdminMovies /> } />
         </Route>
         <Route path="genres/save" element={ <GenresSave /> } />
         <Route path='genres/edit/:id' element={ <GenresEdit /> } />
+        <Route path="movies/save" element={ <MoviesSave /> } />
       </Route>
-      <Route
-        path="auth"
-        element={ <AuthContainer /> }
-      >
-        <Route
-          path="login"
-          element={ <Login /> }
-        />
-        <Route
-          path="register"
-          element={ <Register /> }
-        />
+      <Route path="auth" element={ <AuthContainer /> } >
+        <Route path="login" element={ <Login /> } />
+        <Route path="register" element={ <Register /> } />
       </Route>
     </Route>
   )
