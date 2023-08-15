@@ -8,6 +8,7 @@ import ValidationErrorType from '../../types/ValidationErrorType';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import MovieType from '../../types/models/MovieType';
 
 type FormType = {
   title: string;
@@ -24,7 +25,7 @@ const MoviesSave = () => {
       "Accept": "application/json"
     }
   });
-  const useFetchFunctionObj = useFetchFunction();
+  const useFetchFunctionSave = useFetchFunction<MovieType>();
   const [image, setImage] = useState<File | null>(null);
   const [genreIds, setGenreIds] = useState<Array<number>>([]);
   const [wasSubmited, setWasSubmited] = useState<boolean>(false);
@@ -50,7 +51,7 @@ const MoviesSave = () => {
     formData.append("image", image);
     genreIds.forEach((genreId) => formData.append("genres[]", genreId + ""));
 
-    useFetchFunctionObj.fetchFunction(`${BASE_API_URL}/api/movies`, {
+    useFetchFunctionSave.fetchFunction(`${BASE_API_URL}/api/movies`, {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -60,9 +61,18 @@ const MoviesSave = () => {
     })
   }
 
+  useEffect(() => {
+    const data = useFetchFunctionSave.data;
+    const status = useFetchFunctionSave.status;
+    if(data && status === 201) {
+      navigate(`/movies/${data.id}`);
+      toast.success("Filme registrado com sucesso");
+    }
+  }, [useFetchFunctionSave.data, useFetchFunctionSave.status, navigate]);
+
   const getServerError = (input: FormTypeKeys): string | undefined => {
-    const error = useFetchFunctionObj.error;
-    const status = useFetchFunctionObj.status;
+    const error = useFetchFunctionSave.error;
+    const status = useFetchFunctionSave.status;
     if(error && status && status === 422) {
       const serverError = error as ValidationErrorType;
       return serverError.message[input] && serverError.message[input][0];
@@ -184,7 +194,7 @@ const MoviesSave = () => {
                 </div>
                 <div className="md:col-span-2 md:text-end md:mt-3">
                   <button
-                    disabled={useFetchFunctionObj.isLoading}
+                    disabled={useFetchFunctionSave.isLoading}
                     onClick={() => setWasSubmited(true)}
                     type="submit"
                     className="form-btn md:w-auto md:px-10"

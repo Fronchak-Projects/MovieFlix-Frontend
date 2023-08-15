@@ -41,7 +41,7 @@ const MovieEdit = () => {
     }
   });
 
-  const useFetchFunctionUpdate = useFetchFunction();
+  const useFetchFunctionUpdate = useFetchFunction<MovieType>();
 
   useEffect(() => {
     const error = useFetchMovie.error;
@@ -115,6 +115,15 @@ const MovieEdit = () => {
       body: formData
     })
   }
+
+  useEffect(() => {
+    const data = useFetchFunctionUpdate.data;
+    const status = useFetchFunctionUpdate.status;
+    if(data && status === 200) {
+      navigate(`/movies/${data.id}`);
+      toast.success("Filme atualizado com sucesso");
+    }
+  }, [useFetchFunctionUpdate.data, useFetchFunctionUpdate.status, navigate]);
 
   const getServerError = (input: FormTypeKeys): string | undefined => {
     const error = useFetchFunctionUpdate.error;
