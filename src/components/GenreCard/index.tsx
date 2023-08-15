@@ -10,14 +10,15 @@ type Props = {
 
 const GenreCard = ({ genre, handleDelete }: Props) => {
   return (
-    <div className="bg-white rounded-lg h-full flex flex-col">
+    <div className="card">
       <img
         src={ genre.image ? `${BASE_API_URL}/storage/${genre.image}` : FallbackImage }
-        className="w-full sm:h-48 rounded-t-lg"
       />
-      <div className="p-3 flex-1 flex flex-col justify-between">
-        <h3 className="text-xl mb-2"><Link className="hover:underline hover:text-blue-400" to={`/genres/${genre.id}`}>{ genre.name }</Link></h3>
-        <div className="flex justify-end gap-x-2">
+      <div>
+        <div>
+          <h3><Link to={`/genres/${genre.id}`}>{ genre.name }</Link></h3>
+        </div>
+        <div>
           <Link to={`/genres/edit/${genre.id}`} className="btn px-4 py-1 bg-blue-500 hover:bg-blue-700">Editar</Link>
           <button className="btn px-4 py-1 bg-red-500 hover:bg-red-700" onClick={() => handleDelete(genre.id)}>Excluir</button>
         </div>

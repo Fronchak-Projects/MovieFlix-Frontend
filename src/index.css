@@ -54,6 +54,36 @@
   @apply bg-blue-600;
 }
 
+.card {
+  @apply bg-white rounded-lg h-full flex flex-col;
+}
+
+.card img {
+  @apply w-full rounded-t-lg;
+}
+
+.card > div {
+  @apply p-3 flex-1 flex flex-col justify-between;
+}
+
+.card div:first-child a {
+  @apply text-2xl mb-2 inline-block;
+}
+
+.card div:first-child a:hover {
+  @apply underline text-blue-400;
+}
+
+.card > div div:last-child {
+  @apply flex justify-end gap-x-2;
+}
+
+@screen sm {
+  .card img {
+    @apply h-48;
+  }
+}
+
 @screen md {
   .form-card-container {
     @apply py-24 px-4;
