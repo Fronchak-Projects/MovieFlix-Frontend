@@ -99,7 +99,7 @@ const GenresEdit = () => {
       }
       else if(status === 404) {
         navigate("/admin/genres");
-        toast.error("Gênero não encontrado");
+        toast.error("Erro ao atualizar, gênero não encontrado");
       }
     }
   }, [useFetchFunctionObj.error, useFetchFunctionObj.status]);

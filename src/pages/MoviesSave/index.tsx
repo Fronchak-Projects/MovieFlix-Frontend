@@ -6,7 +6,7 @@ import GenreType from '../../types/models/GenreType';
 import useFetchFunction from '../../hooks/useFetchFunction';
 import ValidationErrorType from '../../types/ValidationErrorType';
 import useAuth from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import MovieType from '../../types/models/MovieType';
 
@@ -20,7 +20,7 @@ type FormTypeKeys = keyof FormType;
 const MoviesSave = () => {
 
   const { register, handleSubmit, formState: { errors }, getFieldState } = useForm<FormType>();
-  const { data, isLoading, error, status } = useFetch<Array<GenreType>>(`${BASE_API_URL}/api/genres`, {
+  const useFetchFunctionSaveGenres = useFetch<Array<GenreType>>(`${BASE_API_URL}/api/genres`, {
     headers: {
       "Accept": "application/json"
     }
@@ -30,8 +30,9 @@ const MoviesSave = () => {
   const [genreIds, setGenreIds] = useState<Array<number>>([]);
   const [wasSubmited, setWasSubmited] = useState<boolean>(false);
   const genreIdsError = genreIds.length === 0 ? 'Campo obrigatório' : '';
-  const { isAuthenticated, token, hasAnyRole } = useAuth();
+  const { isAuthenticated, token, hasAnyRole, logout } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const onSubmit = (formValues: FormType) => {
     if(genreIds.length === 0 || image === null) return;
@@ -69,6 +70,40 @@ const MoviesSave = () => {
       toast.success("Filme registrado com sucesso");
     }
   }, [useFetchFunctionSave.data, useFetchFunctionSave.status, navigate]);
+
+  useEffect(() => {
+    const error = useFetchFunctionSave.error;
+    const status = useFetchFunctionSave.status;
+    if(error && status !== undefined) {
+      if(status === 422) return;
+      if(status === 401) {
+        logout();
+        navigate('/auth/login', {
+          replace: true,
+          state: {
+            from: pathname
+          }
+        });
+        toast.info("Você precisa estar logado para cadastrar um novo filme");
+      }
+      else if(status === 403) {
+        navigate('/admin/movies');
+        toast.info("Você não possui permissão para cadastrar um novo filme");
+      }
+      else {
+        navigate('/admin/movies');
+        toast.info("Algo deu errado, favor tentar novamente mais tarde");
+      }
+    }
+  }, [useFetchFunctionSave.error, useFetchFunctionSave.status, pathname, navigate]);
+
+  useEffect(() => {
+    const error = useFetchFunctionSaveGenres.error;
+    if(error) {
+      navigate('/admin/movies');
+      toast.info("Erro ao carregar o formulário, favor tentar novamente mais tarde");
+    }
+  }, [useFetchFunctionSaveGenres.error, navigate]);
 
   const getServerError = (input: FormTypeKeys): string | undefined => {
     const error = useFetchFunctionSave.error;
@@ -111,10 +146,10 @@ const MoviesSave = () => {
     <div className="main-form-container">
       <div className="out-form-container max-w-3xl">
         <div className="form-card-container">
-          { isLoading && isLoading === true && (
+          { useFetchFunctionSaveGenres.isLoading && useFetchFunctionSaveGenres.isLoading === true && (
             <p>Carregando formulário</p>
           ) }
-          { isLoading !== undefined && isLoading === false && data && (
+          { !useFetchFunctionSaveGenres.isLoading && useFetchFunctionSaveGenres.data && (
             <>
               <h3 className="form-title">Cadastrar novo filme</h3>
               { image && (
@@ -160,7 +195,7 @@ const MoviesSave = () => {
                   <div className="mb-3 md:mb-0">
                     <label className='label' >Gêneros</label>
                     <div className='flex flex-wrap gap-2 mb-1'>
-                      { data.map((genre) => (
+                      { useFetchFunctionSaveGenres.data.map((genre) => (
                         <div className="flex gap-1 items-center" key={genre.id}>
                           <input
                             type='checkbox'

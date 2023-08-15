@@ -73,7 +73,7 @@ const MovieEdit = () => {
       toast.info("Você não possui permissão para acessar esse conteúdo");
       return;
     }
-  }, [navigate, useFetchMovie.error, useFetchMovie.status]);
+  }, [navigate, useFetchMovie.error, useFetchMovie.status, logout]);
 
   useEffect(() => {
     const movie = useFetchMovie.data;
@@ -124,6 +124,44 @@ const MovieEdit = () => {
       toast.success("Filme atualizado com sucesso");
     }
   }, [useFetchFunctionUpdate.data, useFetchFunctionUpdate.status, navigate]);
+
+  useEffect(() => {
+    const error = useFetchFunctionUpdate.error;
+    const status = useFetchFunctionUpdate.status;
+    if(error && status !== undefined) {
+      if(status === 422) return;
+      if(status === 401) {
+        logout();
+        navigate('/auth/login', {
+          replace: true,
+          state: {
+            from: pathname
+          }
+        });
+        toast.info("Você precisa estar logado para cadastrar um novo filme");
+      }
+      else if(status === 403) {
+        navigate('/admin/movies');
+        toast.info("Você não possui permissão para cadastrar um novo filme");
+      }
+      else if(status === 404) {
+        navigate('/admin/movies');
+        toast.info("Erro ao atualizar, filme não encontrado");
+      }
+      else {
+        navigate('/admin/movies');
+        toast.info("Algo deu errado, favor tentar novamente mais tarde");
+      }
+    }
+  }, [useFetchFunctionUpdate.error, useFetchFunctionUpdate.status, pathname, navigate]);
+
+  useEffect(() => {
+    const error = useFetchGenres.error;
+    if(error) {
+      navigate('/admin/movies');
+      toast.info("Erro ao carregar o formulário, favor tentar novamente mais tarde");
+    }
+  }, [useFetchGenres.error, navigate]);
 
   const getServerError = (input: FormTypeKeys): string | undefined => {
     const error = useFetchFunctionUpdate.error;
