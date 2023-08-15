@@ -24,6 +24,7 @@ import AdminContainer from './pages/AdminContainer';
 import AdminMovies from './pages/AdminMovies';
 import MoviesSave from './pages/MoviesSave';
 import Movies from './pages/Movies';
+import Movie from './pages/Movie';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,6 +43,7 @@ const router = createBrowserRouter(
         <Route path="register" element={ <Register /> } />
       </Route>
       <Route path='movies' element={ <Movies /> } />
+      <Route path='movies/:id' element={ <Movie /> } />
     </Route>
   )
 )
