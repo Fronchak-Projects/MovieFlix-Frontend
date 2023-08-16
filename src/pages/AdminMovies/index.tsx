@@ -84,7 +84,7 @@ const AdminMovies = () => {
       { movies === undefined ? (
         <p>Carregando filmes</p>
       ) : (
-        <main className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
+        <main className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
           { movies.map((movie) => (
             <AdminMovieCard movie={movie} key={movie.id}  handleDelete={handleDelete} />
           )) }

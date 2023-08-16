@@ -30,12 +30,12 @@ const Movie = () => {
             <div className='flex flex-wrap gap-3'>
               { movie.genres.map((genre) => (
                 genre.image ? (
-                  <div className='bg-blue-300 border-2 border-blue-600 text-blue-700 rounded-full flex items-center gap-3 pr-5 h-10'>
+                  <div className='bg-blue-300 border-2 border-blue-600 text-blue-700 rounded-full flex items-center gap-3 pr-5 h-10' key={genre.id}>
                     { genre.image && <img src={`${BASE_API_URL}/storage/${genre.image}`} className='h-10 w-10 rounded-full'/> }
                     <span>{ genre.name }</span>
                   </div>
                 ) : (
-                  <div className='bg-blue-300 border-2 border-blue-600 text-blue-700 rounded-full flex items-center px-5 h-10'>
+                  <div className='bg-blue-300 border-2 border-blue-600 text-blue-700 rounded-full flex items-center px-5 h-10' key={genre.id}>
                     <span>{ genre.name }</span>
                   </div>
                 )

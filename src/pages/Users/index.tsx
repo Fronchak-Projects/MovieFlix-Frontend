@@ -76,14 +76,14 @@ const Users = () => {
                     </thead>
                     <tbody className='text-white'>
                       { data.data.map((user) => (
-                        <tr className='border-b transition duration-300 ease-in-out hover:bg-neutral-500'>
+                        <tr className='border-b transition duration-300 ease-in-out hover:bg-neutral-500' key={user.id}>
                           <td className="whitespace-nowrap px-1 py-1">
                             <img src={ user.image ? `${BASE_API_URL}/storage/${user.image}` : UserImage } className='w-12 h-12 rounded-full' />
                           </td>
                           <td className="whitespace-nowrap pl-2  pr-6 py-1">{ user.email }</td>
                           <td className="whitespace-nowrap  px-6 py-1">{ user.name }</td>
                           <td className="whitespace-nowrap  px-6 py-1">
-                            <Link to={`/users/${user.id}`} className='btn px-2 py-1 bg-blue-500 hover:bg-blue-700 text-sm'>Editar</Link>
+                            <Link to={`/users/edit/${user.id}`} className='btn px-2 py-1 bg-blue-500 hover:bg-blue-700 text-sm'>Editar</Link>
                           </td>
                         </tr>
                       )) }

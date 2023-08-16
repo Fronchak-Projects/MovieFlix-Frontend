@@ -28,6 +28,7 @@ import Movie from './pages/Movie';
 import MovieEdit from './pages/MovieEdit';
 import Users from './pages/Users';
 import Profile from './pages/Profile';
+import UsersEdit from './pages/UsersEdit';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -45,6 +46,7 @@ const router = createBrowserRouter(
         <Route path='genres/edit/:id' element={ <GenresEdit /> } />
         <Route path="movies/save" element={ <MoviesSave /> } />
         <Route path="movies/edit/:id" element={ <MovieEdit /> } />
+        <Route path='users/edit/:id' element={ <UsersEdit /> } />
       </Route>
       <Route path="auth" element={ <AuthContainer /> } >
         <Route path="login" element={ <Login /> } />
