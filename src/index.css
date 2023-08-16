@@ -78,6 +78,16 @@
   @apply flex justify-end gap-x-2;
 }
 
+.table-container table {
+  display: block;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  margin: 0 auto;
+  overflow-x: auto;
+  white-space: nowrap;
+  width: 100%;
+}
+
 @screen sm {
   .card img {
     @apply h-48;
