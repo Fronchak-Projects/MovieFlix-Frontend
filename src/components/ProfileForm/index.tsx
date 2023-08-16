@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -88,6 +88,19 @@ const ProfileForm = () => {
     const status = useFetchFunctionUpdate.status;
     if(status && status === 200) {
       toast.success("Usuário atualizado com sucesso");
+    }
+    else if(status === 401) {
+      logout();
+      navigate("/auth/login", {
+        replace: true,
+        state: {
+          from: pathname
+        }
+      });
+      toast.info("Você precisa estar logado para atualizar as suas informações");
+    }
+    else if(status && status !== 422) {
+      toast.error("Erro ao tentar atualizar perfil, favor tentar novamente mais tarde");
     }
   }, [useFetchFunctionUpdate.status]);
 
