@@ -21,7 +21,7 @@ const Login = () => {
   const { saveToken } = useAuth();
   const navigate = useNavigate();
   const { state } = useLocation();
-  const from = state ? state.from : "/genres";
+  const from = state ? state.from : "/movies";
 
   const onSubmit = (formData: LoginFormType) => {
     fetchFunction(`${BASE_API_URL}/api/auth/login`, {

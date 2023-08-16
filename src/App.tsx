@@ -27,10 +27,14 @@ import Movies from './pages/Movies';
 import Movie from './pages/Movie';
 import MovieEdit from './pages/MovieEdit';
 import Users from './pages/Users';
+import Profile from './pages/Profile';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={ <Root /> } >
+      <Route >
+        <Route path='profile' element={ <Profile /> } />
+      </Route>
       <Route element={ <PrivateRoutes roles={['admin', 'worker']} /> } >
         <Route path="admin" element={ <AdminContainer /> }>
           <Route path="genres" element={ <Genres /> } />

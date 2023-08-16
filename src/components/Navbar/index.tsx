@@ -28,7 +28,7 @@ const Navbar = () => {
           </ul>
           { isAuthenticated() ?
             <ul className="flex">
-              <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/auth/login">{ tokenData?.email }</NavLink></li>
+              <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/profile">{ tokenData?.email }</NavLink></li>
               <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="#" onClick={onLogout}>Logout</NavLink></li>
             </ul>
            :
