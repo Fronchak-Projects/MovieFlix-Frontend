@@ -10,6 +10,7 @@ const useFetchFunction = <T>() => {
   const fetchFunction = async(url: string, config: RequestInit | undefined = undefined) => {
     try {
       setIsLoading(true);
+      setResponse(undefined);
       const controller = new AbortController();
       setController(controller);
       const response = await fetch(url, {

@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import useFetchFunction from "../../hooks/useFetchFunction";
-import ValidationErrorType from "../../types/ValidationErrorType";
 import { BASE_API_URL } from "../../utils/Contantes";
 import { toast } from "react-toastify";
 
@@ -17,9 +16,10 @@ type FormTypeKeys = keyof FormType;
 
 const ChangePasswordForm = () => {
 
-  const { register, handleSubmit, formState: { errors }, getFieldState, setValue, watch, reset } = useForm<FormType>();
-  const { error, status, fetchFunction } = useFetchFunction();
+  const { register, handleSubmit, formState: { errors }, getFieldState, watch, reset } = useForm<FormType>();
+  const { status, fetchFunction } = useFetchFunction();
   const { logout, token, isAuthenticated } = useAuth();
+  const [serverError, setServerError] = useState<string | undefined>();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -49,16 +49,17 @@ const ChangePasswordForm = () => {
   useEffect(() => {
     if(!status) return;
     if(status === 200) {
+      setServerError(undefined);
       toast.success('Senha atualizada com sucesso');
       reset();
     }
     else if(status === 401) {
-      toast.error('Senha antiga inválida');
+      setServerError("Senha incorreta");
     }
     else if(status === 422) {
-      toast.error('As senhas não batem');
+      setServerError('As senhas não batem');
     }
-  }, [status]);
+  }, [status, setServerError]);
 
   const getErrorMessage = (input: FormTypeKeys): string | undefined => {
     return errors[input]?.message;
@@ -71,6 +72,9 @@ const ChangePasswordForm = () => {
   return (
     <>
       <h3 className="form-title">Mudar senha</h3>
+      { serverError && (
+        <div className="mb-3 p-2 text-red-500 bg-red-200 rounded-lg">{ serverError }</div>
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3">
           <label className="label">Senha atual</label>

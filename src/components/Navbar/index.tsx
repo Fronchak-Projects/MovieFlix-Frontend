@@ -7,6 +7,8 @@ const Navbar = () => {
   const { isAuthenticated, tokenData, logout } = useAuth();
   const navigate = useNavigate();
 
+  const authenticated = isAuthenticated();
+
   const onLogout = () => {
     logout();
     navigate('/auth/login');
@@ -24,9 +26,9 @@ const Navbar = () => {
         <nav className="hidden md:flex flex-1 justify-between">
           <ul className="flex">
             <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/movies">Movies</NavLink></li>
-            <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/admin">Admin</NavLink></li>
+            { authenticated && <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/admin/movies">Admin</NavLink></li> }
           </ul>
-          { isAuthenticated() ?
+          { authenticated ?
             <ul className="flex">
               <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/profile">{ tokenData?.email }</NavLink></li>
               <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="#" onClick={onLogout}>Logout</NavLink></li>

@@ -8,12 +8,12 @@ import MovieCard from '../../components/MovieCard';
 
 const Movies = () => {
 
-  const { data, isLoading, error, status, fetchFunction } = useFetchFunction<PageType<MovieCardType>>();
+  const { data, fetchFunction } = useFetchFunction<PageType<MovieCardType>>();
   const refEffect = useRef<boolean>(false);
 
   useEffect(() => {
     if(refEffect.current === false) {
-      fetchFunction(`${BASE_API_URL}/api/movies`, {
+      fetchFunction(`${BASE_API_URL}/api/movies?size=24`, {
         headers: {
           "Accept": "application/json"
         }
