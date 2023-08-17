@@ -48,12 +48,14 @@ const router = createBrowserRouter(
         <Route path="movies/edit/:id" element={ <MovieEdit /> } />
         <Route path='users/edit/:id' element={ <UsersEdit /> } />
       </Route>
+      <Route element={ <PrivateRoutes /> }>
+        <Route path='movies/:id' element={ <Movie /> } />
+      </Route>
       <Route path="auth" element={ <AuthContainer /> } >
         <Route path="login" element={ <Login /> } />
         <Route path="register" element={ <Register /> } />
       </Route>
       <Route path='movies' element={ <Movies /> } />
-      <Route path='movies/:id' element={ <Movie /> } />
     </Route>
   )
 )
