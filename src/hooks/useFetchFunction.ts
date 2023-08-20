@@ -11,6 +11,8 @@ const useFetchFunction = <T>() => {
     try {
       setIsLoading(true);
       setResponse(undefined);
+      setData(undefined);
+      setError(undefined);
       const controller = new AbortController();
       setController(controller);
       const response = await fetch(url, {
