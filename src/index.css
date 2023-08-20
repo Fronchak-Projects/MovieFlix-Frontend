@@ -108,6 +108,14 @@
   @apply text-gray-600 cursor-default;
 }
 
+.footer-link {
+  @apply text-sm text-white duration-500;
+}
+
+.footer-link:hover {
+  @apply underline;
+}
+
 @screen sm {
   .card img {
     @apply h-48;
