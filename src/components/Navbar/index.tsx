@@ -20,7 +20,7 @@ const Navbar = () => {
       <div className="container mx-auto px-1 flex justify-between md:justify-start items-center">
         <div className="flex gap-x-2 text-xl">
           <i className="bi bi-film"></i>
-          <h1 className="font-bold">Movie Flix</h1>
+          <h1 className="font-bold"><NavLink to='/'>Movie Flix</NavLink></h1>
         </div>
         <i className="bi bi-list text-white md:invisible"></i>
         <nav className="hidden md:flex flex-1 justify-between">
