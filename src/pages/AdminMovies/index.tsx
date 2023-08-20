@@ -9,10 +9,9 @@ import AdminMovieCard from '../../components/AdminMovieCard';
 import useAuth from '../../hooks/useAuth';
 import { toast } from "react-toastify";
 import GenreType from '../../types/models/GenreType';
-import MovieCardLoader from '../../components/MovieCardLoader';
 import PaginationLoader from '../../components/PaginationLoader';
 import Pagination from '../../components/Pagination';
-import AdminMovieCardLoader from '../../components/AdminMovieCardLoader';
+import AdminCardLoader from '../../components/AdminCardLoader';
 
 const AdminMovies = () => {
 
@@ -65,6 +64,14 @@ const AdminMovies = () => {
       setMovies(undefined);
     }
   }, [useFetchPage.data]);
+
+  useEffect(() => {
+    const error = useFetchPage.error;
+    if(error) {
+      navigate('/');
+      toast.error('Erro ao carregar filmes, favor tentar novamente mais tarde');
+    }
+  }, [useFetchPage.error, navigate]);
 
   const handleApplyFilters = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -183,10 +190,10 @@ const AdminMovies = () => {
       { useFetchPage.isLoading && (
         <>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
-            <AdminMovieCardLoader />
-            <AdminMovieCardLoader />
-            <AdminMovieCardLoader />
-            <AdminMovieCardLoader />
+            <AdminCardLoader />
+            <AdminCardLoader />
+            <AdminCardLoader />
+            <AdminCardLoader />
           </div>
           <PaginationLoader />
         </>

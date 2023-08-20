@@ -1,4 +1,4 @@
-const AdminMovieCardLoader = () => {
+const AdminCardLoader = () => {
   return (
     <div className="bg-white rounded-md border border-gray-400">
       <div className="animate-pulse">
@@ -16,4 +16,4 @@ const AdminMovieCardLoader = () => {
   )
 }
 
-export default AdminMovieCardLoader;
+export default AdminCardLoader;

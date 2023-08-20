@@ -7,6 +7,7 @@ import GenreCard from '../../components/GenreCard';
 import useFetchFunction from '../../hooks/useFetchFunction';
 import useAuth from '../../hooks/useAuth';
 import { toast } from "react-toastify";
+import AdminCardLoader from '../../components/AdminCardLoader';
 
 const Genres = () => {
 
@@ -24,6 +25,9 @@ const Genres = () => {
   useEffect(() => {
     if(data !== undefined) {
       setGenres(data);
+    }
+    else {
+      setGenres(undefined);
     }
   }, [data]);
 
@@ -49,6 +53,13 @@ const Genres = () => {
   }
 
   useEffect(() => {
+    if(error) {
+      navigate('/');
+      toast.error('Erro ao carregar gêneros, favor tentar novamente mais tarde');
+    }
+  }, [error]);
+
+  useEffect(() => {
     if(useFetchFunctionObj.status === 204) {
       toast.success("Gênero deletado com sucesso");
       const nextGenres = genres?.filter((genre) => genre.id != idDeleted);
@@ -62,8 +73,13 @@ const Genres = () => {
         <h2 className="text-white font-bold text-2xl uppercase">Gêneros</h2>
         <Link className="btn px-4 py-1 bg-blue-500 hover:bg-blue-700" to="/genres/save">Adicionar gênero</Link>
       </div>
-      { isLoading && isLoading === true && (
-        <p className="text-xl">Carregando gêneros</p>
+      { isLoading && (
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+            <AdminCardLoader />
+            <AdminCardLoader />
+            <AdminCardLoader />
+            <AdminCardLoader />
+          </div>
       ) }
       { genres && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

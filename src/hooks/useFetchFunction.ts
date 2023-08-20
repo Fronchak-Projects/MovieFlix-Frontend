@@ -29,7 +29,7 @@ const useFetchFunction = <T>() => {
       }
     }
     catch(e) {
-
+      setError(e);
     }
     finally {
       setIsLoading(false);
