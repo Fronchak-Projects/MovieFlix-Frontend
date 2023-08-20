@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
 
-  const { isAuthenticated, tokenData, logout } = useAuth();
+  const { isAuthenticated, tokenData, logout, hasAnyRole } = useAuth();
   const navigate = useNavigate();
 
   const authenticated = isAuthenticated();
@@ -26,7 +26,7 @@ const Navbar = () => {
         <nav className="hidden md:flex flex-1 justify-between">
           <ul className="flex">
             <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/movies">Movies</NavLink></li>
-            { authenticated && <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/admin/movies">Admin</NavLink></li> }
+            { authenticated && hasAnyRole(['admin', 'worker']) && <li><NavLink className="inline-block px-2 py-1 hover:bg-gray-500 duration-300" to="/admin/movies">Admin</NavLink></li> }
           </ul>
           { authenticated ?
             <ul className="flex">

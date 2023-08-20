@@ -11,6 +11,7 @@ import ValidationErrorType from '../../types/ValidationErrorType';
 import { toast } from 'react-toastify';
 import MovieReviewType from '../../types/models/MovieReviewType';
 import UserImage from '../../assets/imgs/user.png';
+import Stars from '../../components/Stars';
 
 type FormType = {
   rating: number;
@@ -25,7 +26,9 @@ for(let i = 0; i <= 5; i = i + 0.5) {
   ratings.push(i);
 }
 
-const numberFormat = new Intl.NumberFormat('pt-BR')
+const numberFormat = new Intl.NumberFormat('pt-BR', {
+  maximumFractionDigits: 1
+});
 
 const Movie = () => {
 
@@ -167,6 +170,12 @@ const Movie = () => {
                 )
               )) }
             </div>
+            { movie.rating && (
+            <div className='flex gap-2 mt-3 text-3xl items-center'>
+              <Stars rating={movie.rating} />
+              <span className='text-yellow-400 text-2xl font-bold'>{ numberFormat.format(movie.rating) }/{ numberFormat.format(5) }</span>
+            </div>
+          ) }
           </div>
           <div className='p-4 md:col-span-2'>
             <p className='leading-relaxed text-gray-700'>{ movie.synopsis }</p>
