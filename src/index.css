@@ -88,6 +88,26 @@
   width: 100%;
 }
 
+#pagination-container ul {
+  @apply list-none pl-0 flex justify-center items-center flex-wrap gap-y-2;
+}
+
+.page-item {
+  @apply bg-gray-200 text-black w-10 h-10 rounded-full flex items-center justify-center mx-1 text-lg;
+}
+
+#pagination-container i {
+  @apply text-white text-xl;
+}
+
+#pagination-container .active-page {
+  @apply bg-blue-500
+}
+
+#pagination-container li.inactive-arrow i {
+  @apply text-gray-600 cursor-default;
+}
+
 @screen sm {
   .card img {
     @apply h-48;

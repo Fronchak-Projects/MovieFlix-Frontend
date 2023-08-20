@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import useFetchFunction from "../../hooks/useFetchFunction";
 import PageType from "../../types/PageType";
 import MovieCardType from "../../types/models/MovieCardType";
@@ -6,69 +6,71 @@ import { BASE_API_URL } from '../../utils/Contantes';
 import MovieCard from '../../components/MovieCard';
 import useFetch from '../../hooks/useFetch';
 import GenreType from '../../types/models/GenreType';
+import Pagination from '../../components/Pagination';
 
 
 const Movies = () => {
 
   const [showClearFilterButton, setShowClearFilterButton] = useState<boolean>(false);
-  const { data, fetchFunction } = useFetchFunction<PageType<MovieCardType>>();
+  const { data, fetchFunction, isLoading, error } = useFetchFunction<PageType<MovieCardType>>();
   const genresFetch = useFetch<Array<GenreType>>(`${BASE_API_URL}/api/genres`, {
     headers: {
       'Accept': 'application/json'
     }
   });
   const refEffect = useRef<boolean>(false);
+  const refFilter = useRef<string>('');
+  const refGenreFilter = useRef<string>('0');
   const refInputTextFilter = useRef<HTMLInputElement | null>(null);
   const refComboBoxGenreFilter = useRef<HTMLSelectElement | null>(null);
 
+  const fetchMovies = useCallback((page: number = 0) => {
+    fetchFunction(`${BASE_API_URL}/api/movies?size=2&page=${page}&title=${refFilter.current}${refGenreFilter.current === '0' ? '' : `&genre=${refGenreFilter.current}`}`, {
+      headers: {
+        "Accept": "application/json"
+      }
+    });
+  }, [fetchFunction]);
+
   useEffect(() => {
     if(refEffect.current === false) {
-      fetchFunction(`${BASE_API_URL}/api/movies?size=24`, {
-        headers: {
-          "Accept": "application/json"
-        }
-      })
+      fetchMovies(0);
     }
 
     return () => {
       refEffect.current = true;
     }
-  }, [fetchFunction]);
+  }, [fetchMovies]);
 
   const handleApplyFilters = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const textFilter = refInputTextFilter.current?.value ?? '';
-    const genreFilter = refComboBoxGenreFilter.current?.value;
-    if(!genreFilter || genreFilter === '0') {
-      fetchFunction(`${BASE_API_URL}/api/movies?size=24&title=${textFilter}`, {
-        headers: {
-          "Accept": "application/json"
-        }
-      })
-    }
-    else {
-      fetchFunction(`${BASE_API_URL}/api/movies?size=24&title=${textFilter}&genre=${genreFilter}`, {
-        headers: {
-          "Accept": "application/json"
-        }
-      })
-    }
+    refFilter.current = refInputTextFilter.current?.value ?? '';
+    refGenreFilter.current = refComboBoxGenreFilter.current?.value ?? '0';
+    fetchMovies();
     setShowClearFilterButton(true);
   }
 
   const handleClearFilters = () => {
+    refFilter.current = '';
+    refGenreFilter.current = '0';
     if(refInputTextFilter.current) {
       refInputTextFilter.current.value = ''
     }
     if(refComboBoxGenreFilter.current) {
       refComboBoxGenreFilter.current.selectedIndex = 0;
     }
-    fetchFunction(`${BASE_API_URL}/api/movies?size=24`, {
-      headers: {
-        "Accept": "application/json"
-      }
-    });
+    fetchMovies(0);
     setShowClearFilterButton(false);
+  }
+
+  const handlePageChange = (page: number) => {
+    fetchMovies(page + 1);
+    if(refInputTextFilter.current) {
+      refInputTextFilter.current.value = refFilter.current;
+    }
+    if(refComboBoxGenreFilter.current) {
+      refComboBoxGenreFilter.current.value = refGenreFilter.current;
+    }
   }
 
   return (
@@ -119,17 +121,33 @@ const Movies = () => {
           </div>
         </form>
       </div>
-      { data === undefined ? (
+      { isLoading && (
         <p>Carregando filmes</p>
-      ) : (
-        <main className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
-          { data.data.map((movie) => (
-            <MovieCard movie={movie} key={movie.id} />
-          )) }
-        </main>
       ) }
+      { data && (
+        <>
+          { data.data.length === 0 ? (
+            <div className='px-4 py-8 bg-white rounded-lg'>
+              <p className='text-black font-xl text-center'>Desculpe, não encontramos nenhum filme</p>
+            </div>
+          ) : (
+            <main>
+              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
+                { data.data.map((movie) => (
+                  <MovieCard movie={movie} key={movie.id} />
+                )) }
+              </div>
+              <Pagination
+                activePage={data.current_page - 1}
+                pageCount={data.last_page}
+                onPageChange={handlePageChange}
+              />
+            </main>
+          ) }
+        </>
+      )}
     </div>
-  )
+  );
 }
 
 export default Movies;
