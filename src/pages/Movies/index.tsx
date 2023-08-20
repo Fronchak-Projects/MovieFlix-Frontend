@@ -7,6 +7,8 @@ import MovieCard from '../../components/MovieCard';
 import useFetch from '../../hooks/useFetch';
 import GenreType from '../../types/models/GenreType';
 import Pagination from '../../components/Pagination';
+import MovieCardLoader from '../../components/MovieCardLoader';
+import PaginationLoader from '../../components/PaginationLoader';
 
 
 const Movies = () => {
@@ -25,7 +27,7 @@ const Movies = () => {
   const refComboBoxGenreFilter = useRef<HTMLSelectElement | null>(null);
 
   const fetchMovies = useCallback((page: number = 0) => {
-    fetchFunction(`${BASE_API_URL}/api/movies?size=2&page=${page}&title=${refFilter.current}${refGenreFilter.current === '0' ? '' : `&genre=${refGenreFilter.current}`}`, {
+    fetchFunction(`${BASE_API_URL}/api/movies?size=8&page=${page}&title=${refFilter.current}${refGenreFilter.current === '0' ? '' : `&genre=${refGenreFilter.current}`}`, {
       headers: {
         "Accept": "application/json"
       }
@@ -122,7 +124,15 @@ const Movies = () => {
         </form>
       </div>
       { isLoading && (
-        <p>Carregando filmes</p>
+        <>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
+            <MovieCardLoader />
+            <MovieCardLoader />
+            <MovieCardLoader />
+            <MovieCardLoader />
+          </div>
+          <PaginationLoader />
+        </>
       ) }
       { data && (
         <>
