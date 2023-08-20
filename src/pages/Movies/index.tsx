@@ -9,7 +9,8 @@ import GenreType from '../../types/models/GenreType';
 import Pagination from '../../components/Pagination';
 import MovieCardLoader from '../../components/MovieCardLoader';
 import PaginationLoader from '../../components/PaginationLoader';
-
+import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 const Movies = () => {
 
@@ -25,6 +26,7 @@ const Movies = () => {
   const refGenreFilter = useRef<string>('0');
   const refInputTextFilter = useRef<HTMLInputElement | null>(null);
   const refComboBoxGenreFilter = useRef<HTMLSelectElement | null>(null);
+  const navigate = useNavigate();
 
   const fetchMovies = useCallback((page: number = 0) => {
     fetchFunction(`${BASE_API_URL}/api/movies?size=8&page=${page}&title=${refFilter.current}${refGenreFilter.current === '0' ? '' : `&genre=${refGenreFilter.current}`}`, {
@@ -74,6 +76,13 @@ const Movies = () => {
       refComboBoxGenreFilter.current.value = refGenreFilter.current;
     }
   }
+
+  useEffect(() => {
+    if(error) {
+      navigate('/');
+      toast.error('Erro ao carregar filmes, favor tentar novamente mais tarde');
+    }
+  }, [error, navigate]);
 
   return (
     <div className="container px-2 mx-auto py-4 md:py-8">
