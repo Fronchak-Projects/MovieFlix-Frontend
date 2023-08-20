@@ -12,6 +12,7 @@ import GenreType from '../../types/models/GenreType';
 import MovieCardLoader from '../../components/MovieCardLoader';
 import PaginationLoader from '../../components/PaginationLoader';
 import Pagination from '../../components/Pagination';
+import AdminMovieCardLoader from '../../components/AdminMovieCardLoader';
 
 const AdminMovies = () => {
 
@@ -181,11 +182,11 @@ const AdminMovies = () => {
       </div>
       { useFetchPage.isLoading && (
         <>
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
-            <MovieCardLoader />
-            <MovieCardLoader />
-            <MovieCardLoader />
-            <MovieCardLoader />
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
+            <AdminMovieCardLoader />
+            <AdminMovieCardLoader />
+            <AdminMovieCardLoader />
+            <AdminMovieCardLoader />
           </div>
           <PaginationLoader />
         </>
