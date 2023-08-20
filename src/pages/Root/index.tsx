@@ -4,9 +4,11 @@ import Footer from '../../components/footer';
 
 const Root = () => {
   return (
-    <div className="bg-gray-800 min-h-screen">
-      <Navbar />
-      <Outlet />
+    <div className="bg-gray-800 min-h-screen flex flex-col justify-between">
+      <div>
+        <Navbar />
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );
