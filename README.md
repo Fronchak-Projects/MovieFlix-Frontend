@@ -1,27 +1,15 @@
-# React + TypeScript + Vite
+# MovieFlix Frontend React and TypeScript
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Requirements
+* Node 18
+* Npm 9.8
+* Make sure you already setup the backend, following the instructions [here](https://github.com/Fronchak/MovieFlix-Laravel)
 
-Currently, two official plugins are available:
+## How to Use
+1. Clone this project to your machine
+2. Open your terminal in the project's folder
+3. Run the following command: 'npm install' to install all the dependencies
+4. In the 'Contantes.ts' file, localized in the 'src/utils' folder, verify that the 'BASE_API_URL' constant in setup accordingly to the backend url
+5. Run 'npm run dev' to initialize the project
+6. Open your browser in the 'http://localhost:5173' to see the home page
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
