@@ -3,7 +3,7 @@
 ## Requirements
 * Node 18
 * Npm 9.8
-* Make sure you already setup the backend, following the instructions [here](https://github.com/Fronchak/MovieFlix-Laravel)
+* Make sure you already setup the backend, following the instructions [here](https://github.com/Fronchak-Projects/MovieFlix-Backend)
 
 ## How to Use
 1. Clone this project to your machine
