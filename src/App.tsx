@@ -30,10 +30,11 @@ import Users from './pages/Users';
 import Profile from './pages/Profile';
 import UsersEdit from './pages/UsersEdit';
 import Home from './pages/Home';
+import ErrorPage from './pages/ErrorPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={ <Root /> } >
+    <Route path="/" element={ <Root /> } errorElement={ <ErrorPage /> } >
       <Route index element={ <Home /> } />
       <Route >
         <Route path='profile' element={ <Profile /> } />
