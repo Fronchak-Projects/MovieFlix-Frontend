@@ -13,3 +13,34 @@
 5. Run 'npm run dev' to initialize the project
 6. Open your browser in the 'http://localhost:5173' to see the home page
 
+## Images
+
+### Home page
+![Home page](public/imgs/home-page.png)
+
+### Register page
+![Register page](public/imgs/register-page.png)
+
+### Login page
+![Login page](public/imgs/login-page.png)
+
+### Movies page
+![Movies page](public/imgs/movies-page.png)
+
+### Movies details page
+![Movies details page](public/imgs/movie-page.png)
+
+### Profile page
+![Profile page](public/imgs/profile-page.png)
+
+### Movie form
+![Movie form](public/imgs/formulario-de-filme.png)
+
+### Movie form validations
+![Movie form validations](public/imgs/validacoes.png)
+
+### Users list
+![Users list](public/imgs/users.png)
+
+### Genres
+![Genres](public/imgs/generos.png)
